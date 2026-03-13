@@ -144,7 +144,7 @@ class TestConversationDB:
         db.add_message(conv_id, role="user", content="Hello")
         result = db.get_conversation_with_messages(conv_id)
         assert result is not None
-        assert result["conversation"]["id"] == conv_id
+        assert result["id"] == conv_id
         assert len(result["messages"]) == 1
 
     def test_get_conversation_with_messages_not_found(self, db):
