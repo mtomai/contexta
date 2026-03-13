@@ -16,7 +16,7 @@ import os
 import base64
 import logging
 from pathlib import Path
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any
 from collections import Counter
 
 import fitz  # PyMuPDF
@@ -967,7 +967,7 @@ def get_document_page_count(file_path: str, file_type: str) -> int:
             page_count = len(doc)
             doc.close()
             return page_count
-        except:
+        except Exception:
             return 0
     elif file_type.lower() in ['docx', 'doc']:
         return 1
@@ -977,7 +977,7 @@ def get_document_page_count(file_path: str, file_type: str) -> int:
             sheet_count = len(wb.sheetnames)
             wb.close()
             return sheet_count
-        except:
+        except Exception:
             return 0
     else:
         return 0

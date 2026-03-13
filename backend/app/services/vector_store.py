@@ -1,6 +1,5 @@
 from typing import List, Dict, Any, Optional
 from datetime import datetime
-import uuid
 
 import chromadb
 from chromadb.config import Settings as ChromaSettings

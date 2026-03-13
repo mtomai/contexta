@@ -8,15 +8,12 @@ Provides streaming responses with the advanced RAG pipeline:
 - Server-Sent Events (SSE) for real-time token delivery
 """
 
-import re
 import json
-import asyncio
 import logging
 from typing import AsyncGenerator, List, Dict, Any, Optional
 from openai import OpenAI
 
 from app.config import get_settings
-from app.services.vector_store import get_vector_store
 from app.services.context_compressor import compress_context
 from app.services.query_router import classify_query, QueryType
 from app.services.chat_utils import (

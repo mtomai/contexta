@@ -7,7 +7,7 @@ Classifies queries and determines optimal handling strategy.
 
 import re
 from enum import Enum
-from typing import Tuple, List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 
 from app.config import get_settings

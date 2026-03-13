@@ -5,7 +5,6 @@ from typing import Dict, List, Any, AsyncGenerator
 from openai import AsyncOpenAI
 
 from app.config import get_settings
-from app.services.vector_store import get_vector_store
 from app.services.conversation_db import get_conversation_db
 from app.services.chat_utils import (
     _fetch_full_document_chunks,
@@ -13,7 +12,6 @@ from app.services.chat_utils import (
     extract_citations,
     get_formatted_notes_context,
 )
-from app.models.chat import Source
 
 logger = logging.getLogger(__name__)
 

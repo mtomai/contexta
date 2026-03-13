@@ -1,12 +1,9 @@
 import uuid
-import os
 import logging
 from pathlib import Path
 from datetime import datetime
-from typing import List
 
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, status
-from fastapi.responses import JSONResponse
 
 from app.config import get_settings
 from app.models.document import DocumentUploadResponse, DocumentListResponse, DocumentInfo
@@ -131,11 +128,10 @@ async def upload_document(
         )
 
     # Store parent chunks in SQLite (if parent-child mode)
-    parent_count = 0
     if mode == "parent_child" and parent_chunks:
         try:
             parent_store = get_parent_chunk_store()
-            parent_count = parent_store.add_parent_chunks(
+            parent_store.add_parent_chunks(
                 document_id=document_id,
                 document_name=file.filename,
                 parent_chunks=parent_chunks,

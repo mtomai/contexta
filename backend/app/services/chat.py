@@ -320,7 +320,6 @@ async def generate_refinement_response(
             if not content:
                 continue
             metadata = result.get("metadata", {})
-            doc_name = metadata.get("document_name", "Documento Sconosciuto")
             
             resolved_contexts_data.append({
                 "context_text": content,
@@ -431,7 +430,7 @@ async def generate_refinement_response(
                 "query_type": "refinement",
                 "model_used": model,
                 "processing_time": time.time() - start_time,
-                "chunks_retrieved": len(resolved_contexts),
+                "chunks_retrieved": len(resolved_contexts_data),
             }
         }
 
