@@ -66,3 +66,4 @@ backend/conversations.db
 backend/parent_chunks.db
 backend/conversations.db
 backend/uploads
+backend/uv.lock

@@ -27,7 +27,7 @@ def db():
             from datetime import datetime
             conn.execute(
                 "INSERT INTO notebooks (id, name, created_at, updated_at) VALUES (?, ?, ?, ?)",
-                ("nb1", "Test NB", datetime.now(), datetime.now()),
+                ("nb1", "Test NB", datetime.now().isoformat(), datetime.now().isoformat()),
             )
         yield instance
     finally:

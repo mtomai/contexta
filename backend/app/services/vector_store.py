@@ -1,5 +1,5 @@
 from typing import List, Dict, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 import chromadb
 from chromadb.config import Settings as ChromaSettings
@@ -50,7 +50,7 @@ class VectorStore:
         if not chunks:
             return 0
 
-        upload_timestamp = datetime.utcnow().isoformat()
+        upload_timestamp = datetime.now(timezone.utc).isoformat()
 
         # Prepare data for ChromaDB
         ids = []

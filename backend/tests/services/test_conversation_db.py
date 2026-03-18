@@ -47,7 +47,7 @@ class TestConversationDB:
             from datetime import datetime
             conn.execute(
                 "INSERT INTO notebooks (id, name, created_at, updated_at) VALUES (?, ?, ?, ?)",
-                ("nb1", "Test NB", datetime.now(), datetime.now()),
+                ("nb1", "Test NB", datetime.now().isoformat(), datetime.now().isoformat()),
             )
         conv_id = db.create_conversation(title="T", notebook_id="nb1")
         conv = db.get_conversation(conv_id)
@@ -77,7 +77,7 @@ class TestConversationDB:
             from datetime import datetime
             conn.execute(
                 "INSERT INTO notebooks (id, name, created_at, updated_at) VALUES (?, ?, ?, ?)",
-                ("nb1", "NB1", datetime.now(), datetime.now()),
+                ("nb1", "NB1", datetime.now().isoformat(), datetime.now().isoformat()),
             )
         db.create_conversation(title="C1", notebook_id="nb1")
         db.create_conversation(title="C2")
@@ -155,7 +155,7 @@ class TestConversationDB:
             from datetime import datetime
             conn.execute(
                 "INSERT INTO notebooks (id, name, created_at, updated_at) VALUES (?, ?, ?, ?)",
-                ("nb1", "NB", datetime.now(), datetime.now()),
+                ("nb1", "NB", datetime.now().isoformat(), datetime.now().isoformat()),
             )
         db.create_conversation(title="C1", notebook_id="nb1")
         result = db.list_conversations_by_notebook("nb1")

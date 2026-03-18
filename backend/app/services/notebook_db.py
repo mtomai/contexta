@@ -1,6 +1,6 @@
 import sqlite3
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
 from contextlib import contextmanager
 
@@ -74,7 +74,7 @@ class NotebookDB:
             Notebook ID (UUID)
         """
         notebook_id = str(uuid.uuid4())
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc).isoformat()
 
         with self.get_connection() as conn:
             cursor = conn.cursor()
@@ -192,7 +192,7 @@ class NotebookDB:
 
         # Always update updated_at
         updates.append("updated_at = ?")
-        params.append(datetime.utcnow())
+        params.append(datetime.now(timezone.utc).isoformat())
         params.append(notebook_id)
 
         with self.get_connection() as conn:

@@ -77,7 +77,7 @@ class CustomPromptsDB:
             prompt_id: UUID of created prompt
         """
         prompt_id = str(uuid.uuid4())
-        now = datetime.now()
+        now = datetime.now().isoformat()
 
         with self.get_connection() as conn:
             cursor = conn.cursor()
@@ -167,7 +167,7 @@ class CustomPromptsDB:
             return False
 
         updates.append("updated_at = ?")
-        values.append(datetime.now())
+        values.append(datetime.now().isoformat())
         values.append(prompt_id)
 
         with self.get_connection() as conn:

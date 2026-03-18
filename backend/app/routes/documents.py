@@ -1,7 +1,7 @@
 import uuid
 import logging
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, status
 
@@ -66,7 +66,7 @@ async def upload_document(
 
     # Generate unique document ID
     document_id = str(uuid.uuid4())
-    upload_timestamp = datetime.utcnow()
+    upload_timestamp = datetime.now(timezone.utc)
 
     # Save file temporarily
     file_path = Path(settings.uploads_path) / f"{document_id}_{file.filename}"
@@ -90,7 +90,7 @@ async def upload_document(
         if file_path.exists():
             file_path.unlink()
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail=f"Error parsing document: {str(e)}"
         )
 

@@ -1,6 +1,6 @@
 import sqlite3
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
 from contextlib import contextmanager
 
@@ -71,7 +71,7 @@ class NoteDB:
             Note ID (UUID)
         """
         note_id = str(uuid.uuid4())
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc).isoformat()
 
         with self.get_connection() as conn:
             cursor = conn.cursor()

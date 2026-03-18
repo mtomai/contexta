@@ -138,7 +138,7 @@ class ConversationDB:
             conversation_id: UUID of created conversation
         """
         conversation_id = str(uuid.uuid4())
-        now = datetime.now()
+        now = datetime.now().isoformat()
 
         # Serialize document_ids as JSON if provided
         doc_ids_json = json.dumps(document_ids) if document_ids else None
@@ -262,7 +262,7 @@ class ConversationDB:
             message_id: UUID of created message
         """
         message_id = str(uuid.uuid4())
-        now = datetime.now()
+        now = datetime.now().isoformat()
 
         with self.get_connection() as conn:
             cursor = conn.cursor()

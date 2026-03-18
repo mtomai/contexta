@@ -39,4 +39,5 @@ dev = [
 filterwarnings = [
     "ignore::DeprecationWarning:httpx._client",
     "ignore::pydantic.warnings.PydanticDeprecatedSince20",
+    "ignore::ResourceWarning",
 ]

@@ -127,7 +127,7 @@ class AgentPromptsDB:
             prompt_id: UUID of created agent prompt
         """
         prompt_id = str(uuid.uuid4())
-        now = datetime.now()
+        now = datetime.now().isoformat()
 
         variables_json = self._serialize_json(variables or [])
 
@@ -251,7 +251,7 @@ class AgentPromptsDB:
             return False
 
         updates.append("updated_at = ?")
-        values.append(datetime.now())
+        values.append(datetime.now().isoformat())
         values.append(prompt_id)
 
         with self.get_connection() as conn:

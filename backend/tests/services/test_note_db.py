@@ -27,7 +27,7 @@ def db():
             from datetime import datetime
             conn.execute(
                 "INSERT INTO notebooks (id, name, created_at, updated_at) VALUES (?, ?, ?, ?)",
-                ("nb1", "Test NB", datetime.now(), datetime.now()),
+                ("nb1", "Test NB", datetime.now().isoformat(), datetime.now().isoformat()),
             )
         yield instance
     finally:
@@ -88,7 +88,7 @@ class TestNoteDB:
             from datetime import datetime
             conn.execute(
                 "INSERT INTO notebooks (id, name, created_at, updated_at) VALUES (?, ?, ?, ?)",
-                ("nb2", "NB2", datetime.now(), datetime.now()),
+                ("nb2", "NB2", datetime.now().isoformat(), datetime.now().isoformat()),
             )
         db.create_note(notebook_id="nb1", content="NB1 note")
         db.create_note(notebook_id="nb2", content="NB2 note")
