@@ -51,6 +51,36 @@ def _parse_result(mode: str = "parent_child", with_parent_chunks: bool = True):
     }
 
 
+def test_upload_document_accepts_markdown_extension(tmp_path):
+    """Markdown (.md) file passes extension validation (parse is mocked)."""
+    file_obj = _make_upload_file(filename="readme.md", content=b"# Hello")
+
+    with patch.object(
+        documents_module,
+        "settings",
+        SimpleNamespace(uploads_path=str(tmp_path), max_file_size_mb=10),
+    ), patch.object(
+        documents_module, "parse_document", return_value=_parse_result()
+    ), patch.object(
+        documents_module, "get_document_page_count", return_value=1
+    ), patch.object(
+        documents_module, "embed_document_chunks_parallel", new_callable=AsyncMock,
+        return_value=[{"text": "child text", "embedding": [0.1], "metadata": {"chunk_index": 0, "page": 1}}],
+    ), patch.object(
+        documents_module, "get_vector_store",
+        return_value=MagicMock(add_document=MagicMock(return_value=1)),
+    ), patch.object(
+        documents_module, "get_parent_chunk_store",
+        return_value=MagicMock(),
+    ), patch.object(
+        documents_module, "get_bm25_engine",
+        return_value=MagicMock(),
+    ):
+        result = _run_upload(file_obj)
+
+    assert result.document_name == "readme.md"
+
+
 def test_upload_document_rejects_unsupported_file_extension(tmp_path):
     """Unsupported extension returns 400 and exits early."""
     file_obj = _make_upload_file(filename="notes.txt", content=b"abc")

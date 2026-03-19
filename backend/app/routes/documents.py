@@ -18,7 +18,7 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 # Allowed file extensions
-ALLOWED_EXTENSIONS = {".pdf", ".docx", ".doc", ".xlsx"}
+ALLOWED_EXTENSIONS = {".pdf", ".docx", ".doc", ".xlsx", ".md"}
 
 
 @router.post("/upload", response_model=DocumentUploadResponse)

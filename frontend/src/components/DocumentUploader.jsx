@@ -47,11 +47,11 @@ const DocumentUploader = ({ onUploadSuccess, notebookId }) => {
 
   const handleFileUpload = async (file) => {
     // Validate file type
-    const allowedTypes = ['.pdf', '.doc', '.docx', '.xlsx'];
+    const allowedTypes = ['.pdf', '.doc', '.docx', '.xlsx', '.md'];
     const fileExt = '.' + file.name.split('.').pop().toLowerCase();
 
     if (!allowedTypes.includes(fileExt)) {
-      setError('File type not supported. Please select a PDF, Word or Excel file.');
+      setError('File type not supported. Please select a PDF, Word, Excel or Markdown file.');
       return;
     }
 
@@ -120,7 +120,7 @@ const DocumentUploader = ({ onUploadSuccess, notebookId }) => {
         <input
           ref={fileInputRef}
           type="file"
-          accept=".pdf,.doc,.docx,.xlsx"
+          accept=".pdf,.doc,.docx,.xlsx,.md"
           onChange={handleFileSelect}
           style={styles.fileInput}
         />
@@ -131,7 +131,7 @@ const DocumentUploader = ({ onUploadSuccess, notebookId }) => {
             <p style={styles.dropText}>
               Drag a file here or click to select
             </p>
-            <p style={styles.dropSubtext}>PDF or Word (max 50MB)</p>
+            <p style={styles.dropSubtext}>PDF, Word, Excel or Markdown (max 50MB)</p>
           </>
         )}
 

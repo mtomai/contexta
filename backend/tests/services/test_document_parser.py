@@ -12,6 +12,7 @@ from app.services.document_parser import (
     _create_children_from_parent,
     _build_legacy_chunks,
     _build_parent_child_chunks,
+    parse_markdown,
 )
 
 
@@ -206,3 +207,50 @@ class TestBuildParentChildChunks:
         assert result["mode"] == "parent_child"
         assert len(result["parent_chunks"]) >= 1
         assert len(result["child_chunks"]) >= 1
+
+
+class TestParseMarkdown:
+    def test_basic_sections(self, tmp_path):
+        md = "# Intro\n\nSome intro text.\n\n## Details\n\nDetail content here.\n"
+        f = tmp_path / "test.md"
+        f.write_text(md, encoding="utf-8")
+        sections = parse_markdown(str(f))
+        assert len(sections) == 2
+        assert sections[0]["page"] == 1
+        assert "Intro" in sections[0]["text"]
+        assert sections[1]["page"] == 2
+        assert "Details" in sections[1]["text"]
+        assert all(s["source"] == "test.md" for s in sections)
+
+    def test_no_headings(self, tmp_path):
+        md = "Just plain text without any headings.\n"
+        f = tmp_path / "plain.md"
+        f.write_text(md, encoding="utf-8")
+        sections = parse_markdown(str(f))
+        assert len(sections) == 1
+        assert sections[0]["page"] == 1
+        assert "plain text" in sections[0]["text"]
+
+    def test_preamble_before_first_heading(self, tmp_path):
+        md = "Preamble text here.\n\n# Heading\n\nBody.\n"
+        f = tmp_path / "pre.md"
+        f.write_text(md, encoding="utf-8")
+        sections = parse_markdown(str(f))
+        assert len(sections) == 2
+        assert "Preamble" in sections[0]["text"]
+        assert "Heading" in sections[1]["text"]
+
+    def test_empty_file(self, tmp_path):
+        f = tmp_path / "empty.md"
+        f.write_text("", encoding="utf-8")
+        sections = parse_markdown(str(f))
+        assert sections == []
+
+    def test_multiple_heading_levels(self, tmp_path):
+        md = "# H1\n\nText A\n\n## H2\n\nText B\n\n### H3\n\nText C\n"
+        f = tmp_path / "levels.md"
+        f.write_text(md, encoding="utf-8")
+        sections = parse_markdown(str(f))
+        assert len(sections) == 3
+        for i, s in enumerate(sections, 1):
+            assert s["page"] == i

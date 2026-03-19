@@ -540,6 +540,64 @@ def parse_xlsx(file_path: str) -> List[Dict[str, Any]]:
 
 
 # ---------------------------------------------------------------------------
+# Markdown Parsing
+# ---------------------------------------------------------------------------
+
+def parse_markdown(file_path: str) -> List[Dict[str, Any]]:
+    """
+    Parse a Markdown (.md) file into sections split on headings.
+
+    Each top-level heading (lines starting with one or more ``#``) begins a new
+    section.  Text before the first heading is treated as section 1.
+    Each section becomes a "page" dict compatible with the rest of the pipeline.
+
+    Args:
+        file_path: Path to the Markdown file
+
+    Returns:
+        List of dicts with keys ``text``, ``page``, ``source``
+    """
+    try:
+        with open(file_path, "r", encoding="utf-8") as fh:
+            content = fh.read()
+    except Exception as e:
+        raise ValueError(f"Error reading Markdown file: {e}")
+
+    source = Path(file_path).name
+
+    # Split on lines that start with one or more '#' followed by a space
+    heading_pattern = re.compile(r"^(#{1,6})\s", re.MULTILINE)
+    matches = list(heading_pattern.finditer(content))
+
+    sections: List[Dict[str, Any]] = []
+
+    if not matches:
+        # No headings found – treat entire content as a single section
+        text = content.strip()
+        if text:
+            sections.append({"text": text, "page": 1, "source": source})
+        return sections
+
+    # Text before the first heading
+    preamble = content[: matches[0].start()].strip()
+    if preamble:
+        sections.append({"text": preamble, "page": 1, "source": source})
+
+    for i, match in enumerate(matches):
+        start = match.start()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(content)
+        section_text = content[start:end].strip()
+        if section_text:
+            sections.append({
+                "text": section_text,
+                "page": len(sections) + 1,
+                "source": source,
+            })
+
+    return sections
+
+
+# ---------------------------------------------------------------------------
 # Chunking: Standard (legacy) and Parent-Child
 # ---------------------------------------------------------------------------
 
@@ -855,6 +913,8 @@ def parse_document(file_path: str, file_type: str) -> Dict[str, Any]:
         pages_data = parse_doc(file_path)
     elif ft == 'xlsx':
         pages_data = parse_xlsx(file_path)
+    elif ft == 'md':
+        pages_data = parse_markdown(file_path)
     else:
         raise ValueError(f"Unsupported file type: {file_type}")
 
@@ -979,5 +1039,11 @@ def get_document_page_count(file_path: str, file_type: str) -> int:
             return sheet_count
         except Exception:
             return 0
+    elif file_type.lower() == 'md':
+        try:
+            sections = parse_markdown(file_path)
+            return max(len(sections), 1)
+        except Exception:
+            return 1
     else:
         return 0
