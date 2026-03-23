@@ -83,7 +83,7 @@ class Settings(BaseSettings):
         "Do not guess or hallucinate.\n"
         "5. NEUTRALITY: Maintain an objective tone. If sources conflict, present all versions neutrally with citations.\n"
         "6. FORMATTING: Use bullet points, bold text for key terms, and short paragraphs for extreme readability.\n\n"
-        "CRITICAL: ALWAYS respond entirely in fluent English."
+        "CRITICAL: ALWAYS respond in the same language as the user's query."
     )
 
     # Chat user prompt template (placeholders: {context_text}, {query})
@@ -94,7 +94,7 @@ class Settings(BaseSettings):
         "Provide a comprehensive, highly structured response based strictly on the XML context above. "
         "Use the 'name' and 'page' attributes from the XML tags to append inline citations "
         "like [Document_Name, page X] immediately after every extracted fact. "
-        "Respond entirely in English."
+        "Respond in the same language as the user's query."
     )
 
     # Streaming system prompt (used in chat_streaming.py)
@@ -113,7 +113,7 @@ class Settings(BaseSettings):
         "3. Accurately preserve existing citations. When integrating new data from the XML tags (<document name=\"...\" page=\"...\">), "
         "add new citations using the strict format [document_name, page X].\n"
         "4. Do not remove correct information present in the previous version unless explicitly requested.\n\n"
-        "CRITICAL: ALWAYS respond entirely in fluent English."
+        "CRITICAL: ALWAYS respond in the same language as the user's query."
     )
 
     # Refinement user prompt with previous response (placeholders: {previous_response}, {context_text}, {query})
@@ -122,7 +122,7 @@ class Settings(BaseSettings):
         "Context from original documents (XML format):\n{context_text}\n\n---\n\n"
         "Modification request: {query}\n\n"
         "Apply the requested modifications to the previous document. "
-        "Cite new sources using the format [Document_Name, page X] derived from the XML tags. Respond in English."
+        "Cite new sources using the format [Document_Name, page X] derived from the XML tags. Respond in the same language as the user's query."
     )
 
     # Refinement user prompt without previous response (placeholders: {context_text}, {query})
@@ -130,13 +130,13 @@ class Settings(BaseSettings):
         "Document context (XML format):\n{context_text}\n\n---\n\n"
         "Query: {query}\n\n"
         "Answer based strictly on the provided XML documents. "
-        "Cite sources using the format [Document_Name, page X] derived from the XML attributes. Respond in English."
+        "Cite sources using the format [Document_Name, page X] derived from the XML attributes. Respond in the same language as the user's query."
     )
 
     # Title generation prompt (placeholder: {first_message})
     # (Remains unchanged, context from documents not used)
     title_generation_prompt: str = (
-        "Generate a short title (max 5-7 words) in English for a conversation "
+        "Generate a short title (max 5-7 words) in the same language as the user's query for a conversation "
         "starting with this user query.\n"
         "The title must be descriptive and capture the essence of the question.\n\n"
         "Examples:\n"
@@ -145,7 +145,7 @@ class Settings(BaseSettings):
         "- \"Explain the backup process\" -> \"Backup Process\"\n"
         "- \"What is this document about?\" -> \"Document Content\"\n\n"
         "Query: {first_message}\n\n"
-        "Respond ONLY with the title in English, without quotes or trailing punctuation."
+        "Respond ONLY with the title in the same language as the query, without quotes or trailing punctuation."
     )
 
     # Context compression prompt (placeholders: {query}, {full_context})
@@ -166,7 +166,7 @@ class Settings(BaseSettings):
     )
 
     # Continuation prompt (used when LLM response is truncated)
-    continuation_prompt: str = "Continue the response from exactly where you left off. Respond in English."
+    continuation_prompt: str = "Continue the response from exactly where you left off. Respond in the same language you were using."
 
     # Full-document system prompt suffix (appended when query_type == FULL_DOCUMENT)
     full_document_suffix: str = (
@@ -181,7 +181,7 @@ class Settings(BaseSettings):
         "You are an expert AI assistant in document analysis. "
         "Answer queries based exclusively on the provided XML context. "
         "If the context does not contain sufficient information, state so clearly. "
-        "Always respond in fluent English."
+        "Always respond in the same language as the user's query."
     )
 
     # Vision image description prompt (used in document_parser.py)
