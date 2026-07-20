@@ -23,7 +23,7 @@ dependencies = [
     "rank-bm25>=0.2.2",
     "httpx>=0.28.1,<0.29",
     "PyJWT>=2.12.1",
-    "python-jose[cryptography]>=3.3.0",
+    "python-jose[cryptography]>=3.5.0",
     "nltk==3.9.4",
     "sentence-transformers>=5.4.0",
 ]
