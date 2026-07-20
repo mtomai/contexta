@@ -13,7 +13,7 @@
     "react-dom": "^19.2.7",
     "axios": "^1.18.0",
     "react-markdown": "^10.1.0",
-    "lucide-react": "^1.24.0"
+    "lucide-react": "^1.25.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.2",
